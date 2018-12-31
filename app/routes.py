@@ -19,6 +19,21 @@ def get_all_red_flag_records():
         "status": 200
     }), 200
 
+@app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["GET"])
+def get_single_red_flag_record(red_flag_id):
+    """Get a red flag with a given id"""
+    red_flag = [
+        red_flag for red_flag in red_flags if red_flag["id"] == red_flag_id]
+    if not red_flag:
+        return jsonify({
+            "status": 400,
+            "error": "ID Not found. Enter a valid ID"
+        }),400
+    return jsonify({
+        "data": red_flag,
+        "status": 200
+    }), 200
+
 @app.route("/api/v1/red_flags", methods=["POST"])
 def create_red_flag_record():
     """Create a red flag"""
