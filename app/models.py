@@ -6,8 +6,8 @@ class Incident:
     incident_id = 1
 
     def __init__(
-            self, createdBy, createdOn, type, location, status, images,
-             videos, comment):
+        self, createdBy, createdOn, type, location, status, images,
+            videos, comment):
         self._id = Incident.incident_id
         self.createdBy = createdBy
         self.createdOn = createdOn
@@ -37,7 +37,6 @@ class Incident:
         if not self.images:
             return "images must not be empty"
 
-
     @staticmethod
     def validate_location(location):
         if not location or not isinstance(location, str) or location.isspace():
@@ -59,8 +58,8 @@ class User:
 
     user_id = 1
 
-    def __init__(self,firstname,lastname,othernames,email,phoneNumber,
-    username,registered,isAdmin):
+    def __init__(self, firstname, lastname, othernames, email, phoneNumber,
+                 username, registered, isAdmin):
         self.id = id(User.user_id)
         self.firstname = firstname
         self.lastname = lastname
@@ -78,4 +77,3 @@ class User:
                     email=self.email, phoneNumber=self.phoneNumber,
                     username=self.username, registered=self.registered,
                     isAdmin=self.isAdmin)
-
