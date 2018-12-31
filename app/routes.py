@@ -11,6 +11,13 @@ red_flags = []
 def index():
     return "Welcome to api."
 
+@app.route("/api/v1/red_flags", methods=["GET"])
+def get_all_red_flag_records():
+    """Get all available red flags"""
+    return jsonify({
+        "data": red_flags,
+        "status": 200
+    }), 200
 
 @app.route("/api/v1/red_flags", methods=["POST"])
 def create_red_flag_record():
