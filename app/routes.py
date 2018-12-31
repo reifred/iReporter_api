@@ -116,3 +116,20 @@ def patch_red_flag_comment(red_flag_id):
             "id": incident[-1]["id"],
             "message":"Updated red-flag comment"
         }]}),200
+
+@app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["DELETE"])
+def delete_red_flag(red_flag_id):
+    red_flag = [
+        red_flag for red_flag in red_flags if red_flag["id"] == red_flag_id]
+    if not red_flag:
+        return jsonify({
+            "status": 400,"error": "ID Not found. Enter a valid ID"
+        }),400
+    red_flags.remove(red_flag[0])
+    return jsonify({
+        "status": 200,
+        "data": [{
+            "id": red_flag[0]["id"],
+            "message":"Red flag record has been deleted"
+        }]}), 200
+
