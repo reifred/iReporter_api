@@ -93,3 +93,26 @@ def edit_red_flag_location(red_flag_id):
             "message":"Updated red-flag location"
         }]}),200
 
+@app.route("/api/v1/red_flags/<int:red_flag_id>/comment", methods=["PATCH"])
+def patch_red_flag_comment(red_flag_id):
+    if not request.is_json:
+        return jsonify({
+            "status": 400,"error": "JSON request required"
+        }), 400
+    comment = request.get_json().get("comment")
+    incident = [
+        incident for incident in red_flags if incident["id"] == red_flag_id]
+    if not incident:
+        return jsonify({
+            "status": 400,"error": "ID Not found. Enter a valid ID"
+        }),400
+    error = Incident.validate_comment(comment)
+    if error:
+        return jsonify({"status":400,"error":error}),400
+    incident[-1]["comment"] = comment
+    return jsonify({
+        "status": 200,
+        "data": [{
+            "id": incident[-1]["id"],
+            "message":"Updated red-flag comment"
+        }]}),200
