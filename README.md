@@ -63,8 +63,8 @@ python run.py
 * Postman used to test the api end points
 
 ## Deployment
-The link to ***Heroku*** where the api is deployed [here](https://fred-ireporter-api.herokuapp.com/)
-Append the api end points stated above to this home route.
+* The link to ***Heroku*** where the api is deployed [here](https://fred-ireporter-api.herokuapp.com/).
+* To access other routes append the api end points stated above to the home route.
 
   ### Authors
 Mugerwa Fred
