@@ -1,0 +1,7 @@
+.vscode
+venv
+.coverage
+.pytest_cache
+app
+app\__pycache__
+tests/__pycache__/
