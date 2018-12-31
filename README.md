@@ -57,7 +57,7 @@ python run.py
  * [PIP](https://pip.pypa.io/en/stable/) - A python package installer
 
 ## Tools Used
-* Pivotal Tracker used to user stories for this project
+* Pivotal Tracker used to write user stories for this project
 * Visual Studio acting as an editor for the project files 
 * Github
 * Postman used to test the api end points
