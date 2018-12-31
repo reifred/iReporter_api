@@ -6,6 +6,7 @@ iReporter is an application that enables any/every citizen to bring any form of 
 It was developed because corruption is a huge bane to Africa's development.
 
 #### Getting Started
+Clone the project using the [link](https://github.com/reifred/ireporter_api.git)
 
 ##### Accessing the frontend of the application
 
@@ -27,17 +28,29 @@ It was developed because corruption is a huge bane to Africa's development.
 * The application should display a Google Map with Marker showing the red-flag or intervention location.
 * The user gets real-time email notification when Admin changes the status of their record.
 
-## Built with
-* Python
-* Flask
+### End points
+ HTTP method|End point|functionality 
+ -----------|---------|--------------
+ GET|/|A welcome route to the application
+ GET|/api/v1/red_flags/| Return all red-flags available
+ GET|/api/v1/red_flags/<red_flag_id>| Used to get a specific red-flag record's details.
+ POST|/api/v1/red_flags| Used to create a red-flag record
+ PATCH|/api/v1/red_flags/<red_flag_id>/location| Used to edit the location of a given red-flag record 
+ PATCH|/api/v1/red_flags/<red_flag_id>/comment| Used to edit the comment of a given red-flag record
+ DELETE|/api/v1/red_flags/<red_flag_id>| Used to delete a specific red-flag record 
+ 
+ ### Built with
+ * [Flask](http://flask.pocoo.org/) - micro web framework for Python
+ * [Virtual Environment](https://virtualenv.pypa.io/en/stable/) - Used to create a virtual environment
+ * [PIP](https://pip.pypa.io/en/stable/) - A python package installer
 
 ## Tools Used
 * Pivotal Tracker
 * Visual Studio
 * Github
 
-## Demo
-The link to ***Heroku*** demostrating the API can be found [here](https://fred-ireporter-api.herokuapp.com/)
+## Deployment
+The link to ***Heroku*** where the api is deployed [here](https://fred-ireporter-api.herokuapp.com/)
 
   ### Authors
 Mugerwa Fred
