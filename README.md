@@ -5,28 +5,40 @@
 iReporter is an application that enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.
 It was developed because corruption is a huge bane to Africa's development.
 
-#### Getting Started
-Clone the project using the [link](https://github.com/reifred/ireporter_api.git)
+## Getting Started
+Follow these instructions to get a copy of the API to run on your machine.
 
-##### Accessing the frontend of the application
+### Prerequisites
 
-## Features
+Install the following programs before using the API:
+```
+1. Python version 3.7.1
+2. Postman
+```
 
-1. Users can create an account with iReporter.
-2. User can log in.
-3. Users can create a red-flag record to bring any form of corruption to notice.
-4. Users can create an intervention to call for government intervention.
-5. Users can edit the red-flag or intervention details
-6. Users can delete their red-flag or intervention records.
-7. Users can add geolocation (Lat Long Coordinates) to their red-flag or intervention records.
-8. Users can change the geolocation (Lat Long Coordinates) attached to their red-flag or intervention records.
-9. Admin can change the status of a record to either under investigation, rejected (in the event of a false claim) or resolved (in the event that the claim has been investigated and resolved).
+### Instructions for set up
 
-# Optional Features
-* Users can add images to their red-flag or intervention records, to support their claims.
-* Users can add videos to their red-flag or intervention records, to support their claims.
-* The application should display a Google Map with Marker showing the red-flag or intervention location.
-* The user gets real-time email notification when Admin changes the status of their record.
+- Clone into this repo using:
+```
+git clone https://github.com/reifred/ireporter_api.git
+```
+- Set up a virtual environment for python in the project directory
+- Install the required packages using:
+```
+pip install -r requirements.txt
+```
+### Running the tests
+
+Use the following command to run the tests in your virtual environment:
+```
+pytest -v
+```
+
+### Running the application
+Use the following command in the project folder to run the app:
+```
+python run.py
+```
 
 ### End points
  HTTP method|End point|functionality 
@@ -45,13 +57,14 @@ Clone the project using the [link](https://github.com/reifred/ireporter_api.git)
  * [PIP](https://pip.pypa.io/en/stable/) - A python package installer
 
 ## Tools Used
-* Pivotal Tracker
-* Visual Studio
+* Pivotal Tracker used to user stories for this project
+* Visual Studio acting as an editor for the project files 
 * Github
+* Postman used to test the api end points
 
 ## Deployment
 The link to ***Heroku*** where the api is deployed [here](https://fred-ireporter-api.herokuapp.com/)
+Append the api end points stated above to this home route.
 
   ### Authors
 Mugerwa Fred
-
