@@ -1,5 +1,4 @@
 from app.routes import app
-from app.models import Incident, User
 from tests.getToken import GetToken
 import unittest
 import json

@@ -3,7 +3,6 @@ from os import environ
 from flask import request, jsonify
 import jwt
 import datetime
-from app.models import User
 
 secret_key = environ.get("SECRET_KEY", "my_secret_key")
 
