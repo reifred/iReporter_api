@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3578f4d750ef4cefa0340a2389c64209)](https://app.codacy.com/app/reifred/ireporter_api?utm_source=github.com&utm_medium=referral&utm_content=reifred/ireporter_api&utm_campaign=Badge_Grade_Settings)
 [![Build Status](https://travis-ci.com/reifred/ireporter_api.svg?branch=develop)](https://travis-ci.com/reifred/ireporter_api)
 [![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=develop)](https://coveralls.io/github/reifred/ireporter_api?branch=develop)
 # ireporter_api
