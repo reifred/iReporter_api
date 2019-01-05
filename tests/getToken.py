@@ -1,6 +1,7 @@
 from app.routes import app
 import json
 
+
 class GetToken:
 
     @staticmethod
@@ -14,7 +15,7 @@ class GetToken:
             "username": "username33",
             "password": "password",
             "isAdmin": 0
-            }
+        }
         response = app.test_client().post('/api/v1/auth/sign_up', json=user)
         user = {
             "username": "username33",
@@ -22,18 +23,18 @@ class GetToken:
             "isAdmin": 0
         }
         response = app.test_client().post('/api/v1/auth/sign_in', json=user)
-        token = json.loads(response.data)['token']
+        token = json.loads(response.data)["data"][0]['token']
         print(token)
         return token
-    
+
     @staticmethod
     def get_admin_token():
         user = {
             "username": "admin",
-            "password": "adminpass",
+            "password": "admin@33",
             "isAdmin": 1
         }
         response = app.test_client().post('/api/v1/auth/sign_in', json=user)
-        token = json.loads(response.data)['token']
+        token = json.loads(response.data)["data"][0]['token']
         print(token)
         return token
