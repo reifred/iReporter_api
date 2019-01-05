@@ -53,7 +53,7 @@ def sign_up():
 
     if errors:
         return jsonify({"status": 400, "error": errors}), 400
-      
+
     user = [user for user in users if user["username"] == username
             or user["email"] == email and user["isAdmin"] == isAdmin]
 
@@ -119,6 +119,10 @@ def sign_in():
         else:
             user_id = user[0]["_id"]
             token = encode_token(user_id, isAdmin)
+
+            response = jsonify({
+                "status": 201,
+
             response = jsonify({
                 "status": 201,
                 "data": [{
@@ -256,7 +260,6 @@ def sign_in():
                 }]
             }), 201
     return response
-
 
 @app.route("/api/v1/red_flags", methods=["POST"])
 @token_required
