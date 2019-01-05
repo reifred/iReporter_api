@@ -8,7 +8,7 @@ from app.validators import(
 
 from app.helpers import(
     encode_token, decoded_token, extract_token_from_header,
-    token_required, get_current_identity, get_current_role,
+    token_required, get_current_identity,
     non_admin, admin_required
 )
 
