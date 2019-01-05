@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/reifred/ireporter_api.svg?branch=develop)](https://travis-ci.com/reifred/ireporter_api)
-[![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=develop)](https://coveralls.io/github/reifred/ireporter_api?branch=develop)
+[![Build Status](https://travis-ci.com/reifred/ireporter_api.svg?branch=develop)](https://travis-ci.com/reifred/ireporter_api)[![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=develop)](https://coveralls.io/github/reifred/ireporter_api?branch=develop)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/af087d6811714974a163737ba02f1f41)](https://www.codacy.com/app/reifred/ireporter_api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=reifred/ireporter_api&amp;utm_campaign=Badge_Grade)
 # ireporter_api
 ## Description
 iReporter is an application that enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.
@@ -41,20 +41,22 @@ python run.py
 ```
 
 ### End points
- HTTP method|End point|functionality 
- -----------|---------|--------------
- GET|/|A welcome route to the application
- GET|/api/v1/red_flags/| Return all red-flags available
- GET|/api/v1/red_flags/<red_flag_id>| Used to get a specific red-flag record's details.
- POST|/api/v1/red_flags| Used to create a red-flag record
- PATCH|/api/v1/red_flags/<red_flag_id>/location| Used to edit the location of a given red-flag record 
- PATCH|/api/v1/red_flags/<red_flag_id>/comment| Used to edit the comment of a given red-flag record
- DELETE|/api/v1/red_flags/<red_flag_id>| Used to delete a specific red-flag record 
+ |HTTP method|End point|Functionality| 
+ |-----------|---------|--------------|
+ |GET|/|A welcome route to the application|
+ |GET|/api/v1/red_flags|Return all red-flags available|
+ |GET|/api/v1/red_flags/int:red_flag_id|Get a specific red-flag record|
+ |POST|/api/v1/red_flags|Create a red-flag record|
+ |POST|/api/v1/auth/sign_up|Register new user|
+ |POST|/api/v1/auth/sign_in|Login a user or admin|
+ |PATCH|/api/v1/red_flags/int:red_flag_id/location|Edit location of specific red-flag record| 
+ |PATCH|/api/v1/red_flags/int:red_flag_id/comment|Edit comment of specific red-flag record|
+ |PATCH|/api/v1/red_flags/int:red_flag_id/status|Edit status of specific red-flag record|
+ |DELETE|/api/v1/red_flags/int:red_flag_id|Delete specific red-flag record|
  
  ### Built with
- * [Flask](http://flask.pocoo.org/) - micro web framework for Python
- * [Virtual Environment](https://virtualenv.pypa.io/en/stable/) - Used to create a virtual environment
- * [PIP](https://pip.pypa.io/en/stable/) - A python package installer
+ - [Flask](http://flask.pocoo.org/) - Micro web framework for Python
+ - [PIP](https://pip.pypa.io/en/stable/) - A python package installer
 
 ## Tools Used
 * Pivotal Tracker used to write user stories for this project
