@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/reifred/ireporter_api.svg?branch=develop)](https://travis-ci.com/reifred/ireporter_api)
-[![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=develop)](https://coveralls.io/github/reifred/ireporter_api?branch=develop)
+[![Build Status](https://travis-ci.com/reifred/ireporter_api.svg?branch=develop)](https://travis-ci.com/reifred/ireporter_api)[![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=develop)](https://coveralls.io/github/reifred/ireporter_api?branch=develop)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/af087d6811714974a163737ba02f1f41)](https://www.codacy.com/app/reifred/ireporter_api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=reifred/ireporter_api&amp;utm_campaign=Badge_Grade)
 # ireporter_api
 ## Description
 iReporter is an application that enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.
@@ -54,19 +54,50 @@ python run.py
  |PATCH|/api/v1/red_flags/int:red_flag_id/status|Edit status of specific red-flag record|
  |DELETE|/api/v1/red_flags/int:red_flag_id|Delete specific red-flag record|
  
+ #### Sample Data to use in post man
+```
+Registering a user.
+{
+	"firstname": "Mugerwa",
+	"lastname": "Fred",
+	"othernames": "",
+	"email": "rei@gmail.com",
+	"phoneNumber": "0757605424",
+	"username": "username",
+	"password": "password"
+}
+
+User Log In.
+{
+	"username": "username",
+	"password": "password",
+	"isAdmin": 0
+}
+
+Creating a red_flag
+{
+	"comment": "New comment about corruption",
+	"type": "red_flag",
+	"images": "image.jpg",
+	"location": "Lat 11231 Long 14224",
+	"status": "red-flag",
+	"videos": "vid.mp4"
+}
+
+``` 
  ### Built with
  - [Flask](http://flask.pocoo.org/) - Micro web framework for Python
  - [PIP](https://pip.pypa.io/en/stable/) - A python package installer
 
 ## Tools Used
-* Pivotal Tracker used to write user stories for this project
-* Visual Studio acting as an editor for the project files 
-* Github
-* Postman used to test the api end points
+- Pivotal Tracker used to write user stories for this project
+- Visual Studio acting as an editor for the project files 
+- Github
+- Postman used to test the api end points
 
 ## Deployment
-* The link to ***Heroku*** where the api is deployed [here](https://fred-ireporter-api.herokuapp.com/).
-* To access other routes append the api end points stated above to the home route.
+- The link to ***Heroku*** where the api is deployed [here](https://fred-ireporter-api.herokuapp.com/).
+- To access other routes append the api end points stated above to the home route.
 
   ### Authors
 Mugerwa Fred
