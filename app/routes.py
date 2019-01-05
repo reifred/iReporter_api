@@ -340,7 +340,6 @@ def patch_red_flag_comment_of_given_user(red_flag_id):
                     }]}), 200
     return response
 
-
 @app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["DELETE"])
 @token_required
 @non_admin
