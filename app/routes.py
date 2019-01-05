@@ -79,7 +79,6 @@ def sign_up():
         }), 201
     return response
 
-
 @app.route("/api/v1/auth/sign_in", methods=["POST"])
 def sign_in():
     """
@@ -181,7 +180,6 @@ def get_all_red_flag_records_admin():
         "status": 200
     }), 200
 
-
 @app.route("/api/v1/red_flags", methods=["GET"])
 @token_required
 @non_admin
@@ -194,4 +192,3 @@ def get_all_red_flag_records_of_given_user():
         "data": user_red_flags,
         "status": 200
     }), 200
-
