@@ -77,7 +77,7 @@ User Log In.
 Creating a red_flag
 {
 	"comment": "New comment about corruption",
-	"type": "red-flag",
+	"_type": "red-flag",
 	"images": "image.jpg",
 	"location": "Lat 11231 Long 14224",
 	"videos": "vid.mp4"
