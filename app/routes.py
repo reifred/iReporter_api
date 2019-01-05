@@ -413,3 +413,23 @@ def delete_red_flag_of_given_user(red_flag_id):
                     "message":"Red flag record has been deleted"
                 }]}), 200
     return response
+
+
+@app.errorhandler(Exception)
+def errors(error):
+    """
+    This funcion handles the 404 and 405 HTTP STATUS CODES.
+    It then returns json response on a particular status code.
+    """
+    response = None
+    if error.code == 404:
+        response = jsonify({
+            "status": 404,
+            "error": "Page Not found. Enter a valid URL"
+        }), 404
+    else:
+        response = jsonify({
+            "status": 405,
+            "error": "Method not allowed."
+        }), 405
+    return response
