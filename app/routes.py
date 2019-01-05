@@ -72,7 +72,7 @@ def sign_up():
         response = jsonify({
             "status": 201,
             "data": [{
-                "_id": guest._id,
+                "id": guest._id,
                 "username": guest.username,
                 "message": "User registered"
             }]
@@ -98,12 +98,15 @@ def sign_in():
     password = user.get("password")
     isAdmin = user.get("isAdmin")
 
-    if username == "admin" and password == "adminpass" and isAdmin == 1:
+    if username == "admin" and password == "admin@33" and isAdmin == 1:
+        token = encode_token(id(1),isAdmin)
         response = jsonify({
             "status": 201,
-            "token": encode_token(id(1), isAdmin),
-            "message": "Admin login",
-            "username": "admin"
+            "data": [{
+                "token": token,
+                "message": "Admin login",
+                "username": "admin"
+            }]
         }), 201
     else:
         user = [user for user in users if user["username"] == username
@@ -121,9 +124,12 @@ def sign_in():
             token = encode_token(user_id, isAdmin)
             response = jsonify({
                 "status": 201,
-                "token": token,
-                "message": "User login",
-                "username": username
+                "data": [{
+                    "id": user_id,
+                    "message": "User login",
+                    "username": username,
+                    "token": token
+                }]
             }), 201
     return response
 
@@ -145,35 +151,29 @@ def create_red_flag_record_of_given_user():
         # if the request is in JSON format then get the data
         createdOn = datetime.now().strftime("%Y-%m-%d")
         createdBy = get_current_identity()
-        status = red_flag.get("status")
+        status = "pending"
         comment = red_flag.get("comment")
         _type = red_flag.get("_type")
         images = red_flag.get("images")
         videos = red_flag.get("videos")
         location = red_flag.get("location")
 
-        errors = validate_input(
-            createdBy, location, status, comment, _type, images)
+        errors = validate_input(location, comment, _type, images)
 
         if errors:
             # If the data contain errors then show the errors
             response = jsonify({"status": 400, "error": errors}), 400
         else:
             # If the data doesn't contain errors then store the data
-            incident = Incident(
-                createdBy,
-                createdOn,
-                _type,
-                location,
-                status,
-                images,
-                videos,
-                comment)
+            incident = Incident(createdBy, createdOn, _type, location,
+                status, images, videos, comment)
             red_flags.append(incident.convert_to_dict())
             response = jsonify({
                 "status": 201,
-                "message": "Created red-flag record",
-                "id": incident._id
+                "data":[{
+                    "message": "Created red-flag record",
+                    "id": incident._id
+                }]
             }), 201
     return response
 
@@ -230,7 +230,7 @@ def edit_status_of_user_red_flag(red_flag_id):
             response = jsonify({
                 "status": 200,
                 "data": [{
-                    "_id": red_flag[0]["_id"],
+                    "id": red_flag[0]["_id"],
                     "message":"Updated red-flag status"
                 }]}), 200
     return response
@@ -327,7 +327,7 @@ def edit_red_flag_location_of_given_user(red_flag_id):
                 response = jsonify({
                     "status": 200,
                     "data": [{
-                        "_id": red_flag[0]["_id"],
+                        "id": red_flag[0]["_id"],
                         "message":"Updated red-flag location"
                     }]}), 200
     return response
@@ -375,7 +375,7 @@ def patch_red_flag_comment_of_given_user(red_flag_id):
                 response = jsonify({
                     "status": 200,
                     "data": [{
-                        "_id": incident[-1]["_id"],
+                        "id": incident[-1]["_id"],
                         "message":"Updated red-flag comment"
                     }]}), 200
     return response
@@ -417,7 +417,7 @@ def delete_red_flag_of_given_user(red_flag_id):
             response = jsonify({
                 "status": 200,
                 "data": [{
-                    "_id": red_flag[0]["_id"],
+                    "id": red_flag[0]["_id"],
                     "message":"Red flag record has been deleted"
                 }]}), 200
     return response

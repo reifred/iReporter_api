@@ -90,7 +90,7 @@ class TestApp(unittest.TestCase):
         response = self.client.post("/api/v1/auth/sign_in", json=user)
         json_data = json.loads(response.data)
         self.assertEqual(201, response.status_code)
-        self.assertEqual(json_data["message"], "User login")
+        self.assertEqual(json_data["data"][0]["message"], "User login")
 
     def test_8_sign_up_with_wrong_data_type(self):
         user = {

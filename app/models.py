@@ -17,18 +17,10 @@ class Incident:
         Incident.incident_id += 1
 
     def convert_to_dict(self):
-        return dict(
-            _id=self._id,
-            createdBy=self.createdBy,
-            createdOn=self.createdOn,
-            _type=self._type,
-            location=self.location,
-            status=self.status,
-            images=[
-                self.images],
-            videos=[
-                self.videos],
-            comment=self.comment)
+        return dict(_id=self._id, createdBy=self.createdBy, 
+            createdOn=self.createdOn, _type=self._type, 
+            location=self.location, status=self.status, images=[self.images],
+            videos=[self.videos], comment=self.comment)
 
 
 class User:
