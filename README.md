@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/reifred/ireporter_api.svg?branch=develop)](https://travis-ci.com/reifred/ireporter_api)[![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=develop)](https://coveralls.io/github/reifred/ireporter_api?branch=develop)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/af087d6811714974a163737ba02f1f41)](https://www.codacy.com/app/reifred/ireporter_api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=reifred/ireporter_api&amp;utm_campaign=Badge_Grade)
 # ireporter_api
 ## Description
 iReporter is an application that enables any/every citizen to bring any form of corruption to the notice of appropriate authorities and the general public. Users can also report on things that needs government intervention.
