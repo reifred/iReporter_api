@@ -28,7 +28,7 @@ def index():
 def sign_up():
     """
     This function adds a user with unique (username and email)
-    in the list of users
+    in the list of users and an admin cannot register
     """
     response = None
     data = request.get_json()
@@ -78,6 +78,7 @@ def sign_up():
             }]
         }), 201
     return response
+
 
 
 @app.route("/api/v1/auth/sign_in", methods=["POST"])
