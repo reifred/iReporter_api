@@ -1,6 +1,3 @@
-import random
-
-
 class Incident:
 
     incident_id = 1
