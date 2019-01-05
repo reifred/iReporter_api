@@ -301,3 +301,41 @@ def edit_red_flag_location_of_given_user(red_flag_id):
                         "message":"Updated red-flag location"
                     }]}), 200
     return response
+
+
+@app.route("/api/v1/red_flags/<int:red_flag_id>/comment", methods=["PATCH"])
+@token_required
+@non_admin
+def patch_red_flag_comment_of_given_user(red_flag_id):
+    """Update comment of red flag with ID(red_flag_id) of a certain user"""
+    response = None
+    createdBy = get_current_identity()
+    if not request.is_json:
+        response = jsonify({
+            "status": 400, "error": "JSON request required"
+        }), 400
+    else:
+        comment = request.get_json().get("comment")
+        user_red_flags = [
+            user_red_flags for user_red_flags
+            in red_flags if user_red_flags["createdBy"] == createdBy]
+        incident = [
+            red_flag for red_flag in user_red_flags
+            if red_flag["_id"] == red_flag_id]
+        if not incident:
+            response = jsonify({
+                "status": 400, "error": "ID Not found. Enter a valid ID"
+            }), 400
+        else:
+            error = validate_comment(comment)
+            if error:
+                response = jsonify({"status": 400, "error": error}), 400
+            else:
+                incident[-1]["comment"] = comment
+                response = jsonify({
+                    "status": 200,
+                    "data": [{
+                        "id": incident[-1]["_id"],
+                        "message":"Updated red-flag comment"
+                    }]}), 200
+    return response
