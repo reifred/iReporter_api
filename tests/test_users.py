@@ -15,7 +15,7 @@ class TestApp(unittest.TestCase):
             "username": "username",
             "password": "password",
             "isAdmin": 0
-            }
+        }
 
     def test_1_home(self):
         response = self.client.get("/")
@@ -23,10 +23,10 @@ class TestApp(unittest.TestCase):
         self.assertIn("Welcome to api", str(response.data))
 
     def test_2_wrong_url(self):
-        user={}
+        user = {}
         response = self.client.post("/api/v1/auth/sign_in/fred", json=user)
         json_data = json.loads(response.data)
-        self.assertEqual(404,response.status_code)
+        self.assertEqual(404, response.status_code)
         self.assertEqual(
             json_data["error"],
             "Page Not found. Enter a valid URL")
@@ -37,7 +37,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(json_data["error"], "User doesnt exist")
-    
+
     def test_4_sign_up_with_short_password(self):
         user = {
             "firstname": "Mugerwa",
@@ -48,12 +48,12 @@ class TestApp(unittest.TestCase):
             "username": "username",
             "password": "pass",
             "isAdmin": 0
-            }
+        }
         response = self.client.post("/api/v1/auth/sign_up", json=user)
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "password length should be between 6 to 10")
 
     def test_4_sign_up_without_data(self):
@@ -62,7 +62,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "firstname shoud not be empty string")
 
     def test_5_sign_up_with_correct_data(self):
@@ -70,14 +70,16 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(201, response.status_code)
         self.assertEqual(
-            json_data["data"][0]["message"], 
+            json_data["data"][0]["message"],
             "User registered")
-    
+
     def test_6_sign_up_with_same_username_or_email(self):
         response = self.client.post("/api/v1/auth/sign_up", json=self.user)
         json_data = json.loads(response.data)
-        self.assertEqual(400,response.status_code)
-        self.assertEqual(json_data["error"],"username or email already exists")
+        self.assertEqual(400, response.status_code)
+        self.assertEqual(
+            json_data["error"],
+            "username or email already exists")
 
     def test_7_sign_in_after_registering(self):
         user = {
@@ -100,7 +102,7 @@ class TestApp(unittest.TestCase):
             "username": "username2",
             "password": "password",
             "isAdmin": 0
-            }
+        }
         response = self.client.post("/api/v1/auth/sign_up", json=user)
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
@@ -117,7 +119,7 @@ class TestApp(unittest.TestCase):
             "username": "username2",
             "password": "password",
             "isAdmin": 0
-            }
+        }
         response = self.client.post("/api/v1/auth/sign_up", json=user)
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
