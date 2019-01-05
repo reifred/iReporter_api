@@ -301,4 +301,3 @@ def edit_red_flag_location_of_given_user(red_flag_id):
                         "message":"Updated red-flag location"
                     }]}), 200
     return response
-
