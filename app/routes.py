@@ -180,3 +180,15 @@ def get_all_red_flag_records_admin():
         "data": red_flags,
         "status": 200
     }), 200
+
+
+@app.route("/api/v1/users", methods=["GET"])
+@token_required
+@admin_required
+def get_all_registered_users():
+    """Get all registered users"""
+    return jsonify({
+        "status": 200,
+        "Number": len(users),
+        "data": users
+    })
