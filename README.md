@@ -30,6 +30,7 @@ pip install -r requirements.txt
 Use the following command to run the tests in your virtual environment:
 ```
 pytest -v
+pytest --cov to see coverage
 ```
 
 ### Running the application
