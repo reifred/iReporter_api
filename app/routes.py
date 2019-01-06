@@ -189,8 +189,10 @@ def get_all_registered_users():
     """Get all registered users"""
     return jsonify({
         "status": 200,
-        "Number": len(users),
-        "data": users
+        "data": [{
+            "Number of users" : len(users),
+            "users" : users
+        }] 
     })
 
 
