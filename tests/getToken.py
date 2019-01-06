@@ -1,6 +1,7 @@
 from app.routes import app
 import json
 
+
 class GetToken:
 
     @staticmethod
