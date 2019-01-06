@@ -235,3 +235,29 @@ def get_all_red_flag_records_of_given_user():
         "data": user_red_flags,
         "status": 200
     }), 200
+
+
+@app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["GET"])
+@token_required
+@non_admin
+def get_single_red_flag_record_of_given_user(red_flag_id):
+    """Get a red flag of a certain user with a given id"""
+    response = None
+    createdBy = get_current_identity()
+    user_red_flags = [
+        user_red_flags for user_red_flags
+        in red_flags if user_red_flags["createdBy"] == createdBy]
+    red_flag = [
+        red_flag for red_flag in user_red_flags
+        if red_flag["_id"] == red_flag_id]
+    if not red_flag:
+        response = jsonify({
+            "status": 400,
+            "error": "ID Not found. Enter a valid ID"
+        }), 400
+    else:
+        response = jsonify({
+            "data": red_flag,
+            "status": 200
+        }), 200
+    return response
