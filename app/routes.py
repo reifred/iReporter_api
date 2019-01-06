@@ -169,3 +169,14 @@ def create_red_flag_record_of_given_user():
                 }]
             }), 201
     return response
+
+
+@app.route("/api/v1/auth/red_flags", methods=["GET"])
+@token_required
+@admin_required
+def get_all_red_flag_records_admin():
+    """Get all available red flags"""
+    return jsonify({
+        "data": red_flags,
+        "status": 200
+    }), 200
