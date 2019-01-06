@@ -339,3 +339,40 @@ def patch_red_flag_comment_of_given_user(red_flag_id):
                         "message":"Updated red-flag comment"
                     }]}), 200
     return response
+
+
+@app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["DELETE"])
+@token_required
+@non_admin
+def delete_red_flag_of_given_user(red_flag_id):
+    """Delete red flag with ID(red_flag_id) of a certain user"""
+    response = None
+    createdBy = get_current_identity()
+    red_flag = [
+        red_flag for red_flag in red_flags if red_flag["_id"] == red_flag_id]
+    if not red_flag:
+        response = jsonify({
+            "status": 400, "error": "ID Not found. Enter a valid ID"
+        }), 400
+    else:
+        user_red_flags = [
+            user_red_flags for user_red_flags
+            in red_flags if user_red_flags["createdBy"] == createdBy]
+        print(user_red_flags)
+        red_flag = [
+            red_flag for red_flag in user_red_flags
+            if red_flag["_id"] == red_flag_id]
+        if not red_flag:
+            response = jsonify({
+                "status": 400, "error": "ID Not found. Enter a valid ID"
+            }), 400
+        else:
+            print(red_flag)
+            red_flags.remove(red_flag[0])
+            response = jsonify({
+                "status": 200,
+                "data": [{
+                    "id": red_flag[0]["_id"],
+                    "message":"Red flag record has been deleted"
+                }]}), 200
+    return response
