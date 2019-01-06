@@ -2,7 +2,6 @@ from app.routes import app
 import unittest
 import json
 
-
 class TestApp(unittest.TestCase):
     def setUp(self):
         self.client = app.test_client(self)
