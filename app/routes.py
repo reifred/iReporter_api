@@ -78,3 +78,54 @@ def sign_up():
             }]
         }), 201
     return response
+
+@app.route("/api/v1/auth/sign_in", methods=["POST"])
+def sign_in():
+    """
+    This function checks whether the user exists
+    before login
+    """
+    response = None
+    user = request.get_json()
+    if not request.is_json:
+        return jsonify({
+            "status": 400,
+            "error": "JSON request required"
+        }), 400
+
+    username = user.get("username")
+    password = user.get("password")
+    isAdmin = user.get("isAdmin")
+
+    if username == "admin" and password == "admin@33" and isAdmin == 1:
+        token = encode_token(id(1),isAdmin)
+        response = jsonify({
+            "status": 201,
+            "data": [{
+                "token": token,
+                "message": "Admin login",
+                "username": "admin"
+            }]
+        }), 201
+    else:
+        user = [user for user in users if user["username"] == username
+                and check_password_hash(user["password"], password)
+                and user["isAdmin"] == isAdmin]
+        if not user:
+            response = jsonify({
+                "status": 400,
+                "error": "User doesnt exist"
+            }), 400
+        else:
+            user_id = user[0]["_id"]
+            token = encode_token(user_id, isAdmin)
+            response = jsonify({
+                "status": 201,
+                "data": [{
+                    "id": user_id,
+                    "message": "User login",
+                    "username": username,
+                    "token": token
+                }]
+            }), 201
+    return response
