@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/reifred/ireporter_api.svg?branch=feature)]
-(https://travis-ci.org/reifred/ireporter_api?branch=feature)
+[![Build Status](https://travis-ci.org/reifred/ireporter_api.svg?branch=feature)](https://travis-ci.org/reifred/ireporter_api)
 [![Coverage Status](https://coveralls.io/repos/github/reifred/ireporter_api/badge.svg?branch=feature)](https://coveralls.io/github/reifred/ireporter_api?branch=feature)
 # ireporter_api
 ## Description
