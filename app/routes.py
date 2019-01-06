@@ -192,3 +192,32 @@ def get_all_registered_users():
         "Number": len(users),
         "data": users
     })
+
+
+@app.route("/api/v1/red_flags/<int:red_flag_id>/status", methods=["PATCH"])
+@token_required
+@admin_required
+def edit_status_of_user_red_flag(red_flag_id):
+    """Edit the status of a user red flag"""
+    response = None
+    red_flag = [
+        red_flag for red_flag in red_flags if red_flag["_id"] == red_flag_id]
+    if not red_flag:
+        response = jsonify({
+            "status": 400,
+            "error": "ID Not found. Enter a valid ID"
+        }), 400
+    else:
+        status = request.get_json().get("status")
+        error = validate_status(status)
+        if error:
+            response = jsonify({"status": 400, "error": error}), 400
+        else:
+            red_flag[0]["status"] = status
+            response = jsonify({
+                "status": 200,
+                "data": [{
+                    "id": red_flag[0]["_id"],
+                    "message":"Updated red-flag status"
+                }]}), 200
+    return response
