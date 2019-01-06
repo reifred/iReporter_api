@@ -221,3 +221,17 @@ def edit_status_of_user_red_flag(red_flag_id):
                     "message":"Updated red-flag status"
                 }]}), 200
     return response
+
+
+@app.route("/api/v1/red_flags", methods=["GET"])
+@token_required
+@non_admin
+def get_all_red_flag_records_of_given_user():
+    """Get all available red flags of a given"""
+    createdBy = get_current_identity()
+    user_red_flags = [user_red_flags for user_red_flags
+                      in red_flags if user_red_flags["createdBy"] == createdBy]
+    return jsonify({
+        "data": user_red_flags,
+        "status": 200
+    }), 200
