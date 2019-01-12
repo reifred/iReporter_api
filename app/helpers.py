@@ -9,7 +9,7 @@ secret_key = environ.get("SECRET_KEY", "my_secret_key")
 
 def encode_token(user_id, isAdmin=0):
     """
-    Function returns encoded token
+    Function that returns encoded token
     that contains uid,admin,iat,exp
     """
     payload = {
