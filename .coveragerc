@@ -3,9 +3,6 @@ omit = app\__init__.py
     app\models.py
     app\validators.py
     app\helpers.py
-    tests\__init__.py
-    tests\test_routes.py
-    tests\test_users.py
-    tests\getToken.py
+    tests\*
     *.pyc
     */site-packages/*

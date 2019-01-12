@@ -15,7 +15,6 @@ def encode_token(user_id, isAdmin=0):
     payload = {
         "uid": user_id,
         "adm": isAdmin,
-        "iat": datetime.datetime.utcnow(),
         "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=3)
     }
     token = jwt.encode(payload, secret_key, algorithm="HS256").decode("utf-8")
@@ -25,7 +24,7 @@ def encode_token(user_id, isAdmin=0):
 def decoded_token(token):
     """
     Function returns decoded token
-    {uid: 1, "adm: 0, iat: 1212121, ext: 4757575"}
+    {uid: 1, "adm: 0, ext: 4757575"}
     """
     decoded = jwt.decode(str(token), secret_key, algorithms="HS256")
     return decoded
