@@ -1,4 +1,4 @@
-from app.routes import app
+from app import app
 import json
 
 

@@ -1,139 +1,27 @@
-from flask import Flask, jsonify, request
-from app.models import Incident, User
+from flask import Blueprint, jsonify, request
+from app.models.models import Incident
 from datetime import datetime
 
-from app.validators import(
+from app.helpers.validators import(
     validate_input, validate_edit_input,
-    validate_user_input, validate_status,
-    validate_sign_in)
+    validate_user_input, validate_status)
 
-from app.helpers import(
-    encode_token, decoded_token, extract_token_from_header,
-    token_required, get_current_identity,
-    non_admin, admin_required
+from app.helpers.helpers import (
+    token_required, get_current_identity, non_admin, admin_required
 )
 
-from werkzeug.security import generate_password_hash, check_password_hash
+user_bp = Blueprint("user_bp", __name__, url_prefix="/api/v1")
 
-app = Flask(__name__)
-
-red_flags, users = [], []
+red_flags = []
 response = None
 
 
-@app.route("/")
+@user_bp.route("/")
 def index():
     return "Welcome to api."
 
 
-@app.route("/api/v1/auth/sign_up", methods=["POST"])
-def sign_up():
-    """
-    This function adds a user with unique (username and email)
-    in the list of users
-    """
-    data = request.get_json()
-    if not request.is_json:
-        return jsonify({
-            "status": 400,
-            "error": "JSON request required"
-        }), 400
-    firstname = data.get("firstname")
-    lastname = data.get("lastname")
-    othernames = data.get("othernames")
-    email = data.get("email")
-    phoneNumber = data.get("phoneNumber")
-    username = data.get("username")
-    password = data.get("password")
-    registered = datetime.now().strftime("%Y-%m-%d")
-    isAdmin = 0
-
-    user = [user for user in users if user["username"] == username
-            or user["email"] == email and user["isAdmin"] == isAdmin]
-
-    errors = validate_user_input(
-        firstname, lastname, email, phoneNumber,
-        username, password)
-
-    if errors:
-        response = jsonify({"status": 400, "error": errors}), 400
-    elif user:
-        response = jsonify({"status": 400,
-                            "error": "username or email already exists"
-                            }), 400
-    else:
-        password_hash = generate_password_hash(password, method="sha256")
-        guest = User(
-            firstname, lastname, othernames, email, phoneNumber,
-            username, password_hash, registered, isAdmin)
-        users.append(guest.convert_to_dict())
-        response = jsonify({
-            "status": 201,
-            "data": [{
-                "id": guest._id,
-                "username": guest.username,
-                "message": "User registered"
-            }]
-        }), 201
-    return response
-
-
-@app.route("/api/v1/auth/sign_in", methods=["POST"])
-def sign_in():
-    """
-    This function checks whether the user exists
-    before login
-    """
-    if not request.is_json:
-        return jsonify({
-            "status": 400,
-            "error": "JSON request required"
-        }), 400
-
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-    isAdmin = data.get("isAdmin")
-
-    user = [data for data in users if data["username"] == username
-            and check_password_hash(data["password"], password)
-            and data["isAdmin"] == isAdmin]
-
-    errors = validate_sign_in(username, password)
-
-    if username == "admin" and password == "admin@33" and isAdmin == 1:
-        token = encode_token(id(1), isAdmin)
-        response = jsonify({
-            "status": 201,
-            "data": [{
-                "token": token,
-                "message": "Admin login",
-                "username": "admin"
-            }]
-        }), 201
-    elif errors:
-        response = jsonify({"status": 400, "error": errors}), 400
-    elif not user:
-        response = jsonify({
-            "status": 400,
-            "error": "User doesnt exist"
-        }), 400
-    else:
-        user_id = user[0]["_id"]
-        token = encode_token(user_id, isAdmin)
-        response = jsonify({
-            "status": 201,
-            "data": [{
-                "id": user_id,
-                "message": "User login",
-                "username": username,
-                "token": token
-            }]
-        }), 201
-    return response
-
-
-@app.route("/api/v1/red_flags", methods=["POST"])
+@user_bp.route("/red_flags", methods=["POST"])
 @token_required
 @non_admin
 def create_red_flag_record_of_given_user():
@@ -172,7 +60,7 @@ def create_red_flag_record_of_given_user():
     return response
 
 
-@app.route("/api/v1/auth/red_flags", methods=["GET"])
+@user_bp.route("/admin/red_flags", methods=["GET"])
 @token_required
 @admin_required
 def get_all_red_flag_records_admin():
@@ -183,21 +71,7 @@ def get_all_red_flag_records_admin():
     }), 200
 
 
-@app.route("/api/v1/users", methods=["GET"])
-@token_required
-@admin_required
-def get_all_registered_users():
-    """Get all registered users"""
-    return jsonify({
-        "status": 200,
-        "data": [{
-            "Number of users": len(users),
-            "users": users
-        }]
-    })
-
-
-@app.route("/api/v1/red_flags/<int:red_flag_id>/status", methods=["PATCH"])
+@user_bp.route("/red_flags/<int:red_flag_id>/status", methods=["PATCH"])
 @token_required
 @admin_required
 def edit_status_of_user_red_flag(red_flag_id):
@@ -225,7 +99,7 @@ def edit_status_of_user_red_flag(red_flag_id):
     return response
 
 
-@app.route("/api/v1/red_flags", methods=["GET"])
+@user_bp.route("/red_flags", methods=["GET"])
 @token_required
 @non_admin
 def get_all_red_flag_records_of_given_user():
@@ -239,7 +113,7 @@ def get_all_red_flag_records_of_given_user():
     }), 200
 
 
-@app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["GET"])
+@user_bp.route("/red_flags/<int:red_flag_id>", methods=["GET"])
 @token_required
 @non_admin
 def get_single_red_flag_record_of_given_user(red_flag_id):
@@ -264,9 +138,9 @@ def get_single_red_flag_record_of_given_user(red_flag_id):
     return response
 
 
-@app.route(
-    "/api/v1/red_flags/<int:red_flag_id>/<string:what_to_edit>",
-    methods=["PATCH"])
+@user_bp.route(
+    "/red_flags/<int:red_flag_id>/<string:what_to_edit>", methods=["PATCH"]
+    )
 @token_required
 @non_admin
 def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
@@ -318,7 +192,7 @@ def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
     return response
 
 
-@app.route("/api/v1/red_flags/<int:red_flag_id>", methods=["DELETE"])
+@user_bp.route("/red_flags/<int:red_flag_id>", methods=["DELETE"])
 @token_required
 @non_admin
 def delete_red_flag_of_given_user(red_flag_id):
@@ -351,24 +225,4 @@ def delete_red_flag_of_given_user(red_flag_id):
                 "id": red_flag_id,
                 "message": "Red flag record has been deleted"
             }]}), 200
-    return response
-
-
-@app.errorhandler(Exception)
-def errors(error):
-    """
-    This funcion handles the 404 and 405 HTTP STATUS CODES.
-    It then returns json response on a particular status code.
-    """
-    response = None
-    if error.code == 404:
-        response = jsonify({
-            "status": 404,
-            "error": "Page Not found. Enter a valid URL"
-        }), 404
-    else:
-        response = jsonify({
-            "status": 405,
-            "error": "Method not allowed."
-        }), 405
     return response

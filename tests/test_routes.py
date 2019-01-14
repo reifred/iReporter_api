@@ -1,4 +1,4 @@
-from app.routes import app
+from app import app
 from tests.getToken import GetToken
 import unittest
 import json
@@ -71,7 +71,7 @@ class TestApp(unittest.TestCase):
 
     def test_06_admin_get_all_users_red_flags(self):
         response = self.client.get(
-            "/api/v1/auth/red_flags",
+            "/api/v1/admin/red_flags",
             headers=dict(
                 Authorization='Bearer ' + GetToken.get_admin_token()))
         json_data = json.loads(response.data)
@@ -80,7 +80,7 @@ class TestApp(unittest.TestCase):
 
     def test_07_user_get_all_users_red_flags(self):
         response = self.client.get(
-            "/api/v1/auth/red_flags",
+            "/api/v1/admin/red_flags",
             headers=dict(
                 Authorization='Bearer ' + GetToken.get_user_token()))
         json_data = json.loads(response.data)
