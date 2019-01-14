@@ -1,8 +1,5 @@
 [report]
 omit = app\__init__.py
-    app\models.py
-    app\validators.py
-    app\helpers.py
     tests\*
     *.pyc
     */site-packages/*

@@ -44,7 +44,7 @@ python run.py
 ### End points
  |HTTP method|End point|Functionality| 
  |-----------|---------|--------------|
- |GET|/|A welcome route to the application|
+ |GET|/api/v1/|A welcome route to the application|
  |GET|/api/v1/red_flags|Return all red-flags available|
  |GET|/api/v1/red_flags/int:red_flag_id|Get a specific red-flag record|
  |POST|/api/v1/red_flags|Create a red-flag record|

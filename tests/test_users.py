@@ -1,4 +1,4 @@
-from app.routes import app
+from app import app
 import unittest
 import json
 
@@ -18,7 +18,7 @@ class TestApp(unittest.TestCase):
         }
 
     def test_01_home(self):
-        response = self.client.get("/")
+        response = self.client.get("/api/v1/")
         self.assertEqual(200, response.status_code)
         self.assertIn("Welcome to api", str(response.data))
 
