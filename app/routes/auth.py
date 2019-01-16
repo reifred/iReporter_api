@@ -83,9 +83,7 @@ def sign_in():
     password = data.get("password")
     isAdmin = data.get("isAdmin")
 
-    user = [data for data in users if data["username"] == username
-            and check_password_hash(data["password"], password)
-            and data["isAdmin"] == isAdmin]
+    user_verified = User.verify_user(data, users, username, password, isAdmin)
 
     errors = validate_sign_in(username, password)
 
@@ -101,13 +99,18 @@ def sign_in():
         }), 201
     elif errors:
         response = jsonify({"status": 400, "error": errors}), 400
-    elif not user:
+    elif not User.username_exists(username,users):
         response = jsonify({
             "status": 400,
-            "error": "User doesnt exist"
+            "error": "Username doesnt exist"
+        }), 400
+    elif not user_verified:
+        response = jsonify({
+            "status": 400,
+            "error": "Enter correct password"
         }), 400
     else:
-        user_id = user[0]["_id"]
+        user_id = user_verified[0]["_id"]
         token = encode_token(user_id, isAdmin)
         response = jsonify({
             "status": 201,

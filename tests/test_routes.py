@@ -71,23 +71,22 @@ class TestApp(unittest.TestCase):
 
     def test_06_admin_get_all_users_red_flags(self):
         response = self.client.get(
-            "/api/v1/admin/red_flags",
+            "/api/v1/red_flags",
             headers=dict(
                 Authorization='Bearer ' + GetToken.get_admin_token()))
         json_data = json.loads(response.data)
         self.assertEqual(200, response.status_code)
         self.assertIn("data", json_data)
 
-    def test_07_user_get_all_users_red_flags(self):
+    def test_07_user_get_users_red_flags(self):
         response = self.client.get(
-            "/api/v1/admin/red_flags",
+            "/api/v1/red_flags",
             headers=dict(
                 Authorization='Bearer ' + GetToken.get_user_token()))
         json_data = json.loads(response.data)
-        self.assertEqual(403, response.status_code)
-        self.assertEqual(
-            json_data["error"],
-            "Only Admin can access this resource")
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(200, response.status_code)
+        self.assertIn("data", json_data)
 
     def test_08_get_user_red_flags_without_token(self):
         response = self.client.get("/api/v1/red_flags")
@@ -183,8 +182,8 @@ class TestApp(unittest.TestCase):
         self.assertEqual(
             json_data["error"], "ID Not found. Enter a valid ID")
 
-    def test_18_edit_user_red_flag_comment_with_wrong_data_type(self):
-        comment = {"comment": 1233}
+    def test_18_edit_user_red_flag_comment_with_short_comment(self):
+        comment = {"comment": "Today"}
         response = self.client.patch(
             "/api/v1/red_flags/1/comment",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
@@ -192,7 +191,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(
             json_data["error"],
-            "Input must not be empty string")
+            "comment must be atleast 10 to 40 characters")
 
     def test_19_admin_edit_user_red_flag_status(self):
         status = {"status": "resolved"}
