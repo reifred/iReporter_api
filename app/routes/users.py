@@ -3,7 +3,7 @@ from app.models.models import Incident
 from datetime import datetime
 
 from app.helpers.validators import(
-    validate_input, validate_edit_input,
+    validate_input, validate_string, validate_comment,
     validate_user_input, validate_status)
 
 from app.helpers.helpers import (
@@ -60,13 +60,13 @@ def create_red_flag_record_of_given_user():
     return response
 
 
-@user_bp.route("/admin/red_flags", methods=["GET"])
+@user_bp.route("/red_flags", methods=["GET"])
 @token_required
-@admin_required
-def get_all_red_flag_records_admin():
-    """Get all available red flags"""
+def get_all_red_flag_records():
+    """Get all available red flags of a given user"""
+    red_flag_records = Incident.get_red_flags(red_flags)
     return jsonify({
-        "data": red_flags,
+        "data": red_flag_records,
         "status": 200
     }), 200
 
@@ -76,8 +76,8 @@ def get_all_red_flag_records_admin():
 @admin_required
 def edit_status_of_user_red_flag(red_flag_id):
     """Edit the status of a user red flag"""
-    red_flag = [
-        red_flag for red_flag in red_flags if red_flag["_id"] == red_flag_id]
+    red_flag = Incident.get_red_flag_of_id(red_flag_id,red_flags)
+
     if not red_flag:
         response = jsonify({
             "status": 400,
@@ -99,62 +99,31 @@ def edit_status_of_user_red_flag(red_flag_id):
     return response
 
 
-@user_bp.route("/red_flags", methods=["GET"])
-@token_required
-@non_admin
-def get_all_red_flag_records_of_given_user():
-    """Get all available red flags of a given"""
-    createdBy = get_current_identity()
-    user_red_flags = [user_red_flags for user_red_flags
-                      in red_flags if user_red_flags["createdBy"] == createdBy]
-    return jsonify({
-        "data": user_red_flags,
-        "status": 200
-    }), 200
-
-
 @user_bp.route("/red_flags/<int:red_flag_id>", methods=["GET"])
 @token_required
-@non_admin
-def get_single_red_flag_record_of_given_user(red_flag_id):
-    """Get a red flag of a certain user with a given id"""
-    createdBy = get_current_identity()
-
-    user_red_flag = [
-        user_red_flags for user_red_flags
-        in red_flags if user_red_flags["createdBy"] == createdBy
-        and user_red_flags["_id"] == red_flag_id]
-
-    if not user_red_flag:
+def get_single_red_flag_of_id(red_flag_id):
+    """Get a red flag of id red_flag_id"""
+    red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
+    if not red_flag_of_id:
         response = jsonify({
             "status": 400,
             "error": "ID Not found. Enter a valid ID"
         }), 400
     else:
         response = jsonify({
-            "data": user_red_flag,
+            "data": red_flag_of_id,
             "status": 200
         }), 200
     return response
 
 
 @user_bp.route(
-    "/red_flags/<int:red_flag_id>/<string:what_to_edit>", methods=["PATCH"]
-    )
+    "/red_flags/<int:red_flag_id>/<string:what_to_edit>", methods=["PATCH"])
 @token_required
 @non_admin
 def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
     """Update red flag with ID(red_flag_id) of a certain user"""
-    createdBy = get_current_identity()
-
-    user_red_flag = [
-        red_flag for red_flag in red_flags
-        if red_flag["createdBy"] == createdBy and
-        red_flag["_id"] == red_flag_id]
-
-    red_flag_editable = [
-        red_flag for red_flag in user_red_flag
-        if red_flag["status"] == "draft"]
+    red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
 
     if not request.is_json:
         response = jsonify({
@@ -165,30 +134,33 @@ def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
             "status": 404,
             "error": "Page Not found. Enter a valid URL"
         }), 404
-    elif not user_red_flag:
+    elif not red_flag_of_id:
         response = jsonify({
             "status": 400, "error": "ID Not found. Enter a valid ID"
         }), 400
-    elif not red_flag_editable:
-        response = jsonify({
-            "status": 400,
-            "error": "Only redflag in draft state can be edited"
-        }), 400
     else:
-        comment = request.get_json().get("comment")
-        location = request.get_json().get("location")
-        data = location if what_to_edit == "location" else comment
-        error = validate_edit_input(data)
-        if error:
-            response = jsonify({"status": 400, "error": error}), 400
-        else:
-            red_flag_editable[0][what_to_edit] = data
+        red_flag_editable = Incident.is_red_flag_editable(red_flag_id, red_flags)
+        if not red_flag_editable:
             response = jsonify({
-                "status": 200,
-                "data": [{
-                    "id": red_flag_id,
-                    "message": f"Updated red-flag {what_to_edit}"
-                }]}), 200
+                "status": 400,
+                "error": "Only redflag in draft state can be edited"
+            }), 400
+        else:
+            comment = request.get_json().get("comment")
+            location = request.get_json().get("location")
+            data = location if what_to_edit == "location" else comment
+            error = validate_string("location",data) if what_to_edit == "location" else validate_comment(comment)
+
+            if error:
+                response = jsonify({"status": 400, "error": error}), 400
+            else:
+                red_flag_editable[0][what_to_edit] = data
+                response = jsonify({
+                    "status": 200,
+                    "data": [{
+                        "id": red_flag_id,
+                        "message": f"Updated red-flag {what_to_edit}"
+                    }]}), 200
     return response
 
 
@@ -197,32 +169,24 @@ def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
 @non_admin
 def delete_red_flag_of_given_user(red_flag_id):
     """Delete red flag with ID(red_flag_id) of a certain user"""
-    createdBy = get_current_identity()
-    user_red_flag = [
-        red_flag for red_flag in red_flags
-        if red_flag["createdBy"] == createdBy and
-        red_flag["_id"] == red_flag_id]
-
-    red_flag_editable = [
-        red_flag for red_flag in user_red_flag
-        if red_flag["status"] == "draft"]
-
-    if not user_red_flag:
+    red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
+    if not red_flag_of_id:
         response = jsonify({
             "status": 400, "error": "ID Not found. Enter a valid ID"
         }), 400
-    elif not red_flag_editable:
-        response = jsonify({
-            "status": 400,
-            "error": "Only redflag in draft state can be deleted"
-        }), 400
     else:
-        print(red_flag_editable)
-        red_flags.remove(red_flag_editable[0])
-        response = jsonify({
-            "status": 200,
-            "data": [{
-                "id": red_flag_id,
-                "message": "Red flag record has been deleted"
-            }]}), 200
+        red_flag_editable = Incident.is_red_flag_editable(red_flag_id, red_flags)
+        if not red_flag_editable:
+            response = jsonify({
+                "status": 400,
+                "error": "Only redflag in draft state can be deleted"
+            }), 400
+        else:
+            red_flags.remove(red_flag_editable[0])
+            response = jsonify({
+                "status": 200,
+                "data": [{
+                    "id": red_flag_id,
+                    "message": "Red flag record has been deleted"
+                }]}), 200
     return response

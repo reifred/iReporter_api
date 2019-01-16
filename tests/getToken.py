@@ -13,18 +13,17 @@ class GetToken:
             "email": "reifred33@gmail.com",
             "phoneNumber": "0757605424",
             "username": "username33",
-            "password": "password",
+            "password": "Password33",
             "isAdmin": 0
         }
         response = app.test_client().post('/api/v1/auth/sign_up', json=user)
         user = {
             "username": "username33",
-            "password": "password",
+            "password": "Password33",
             "isAdmin": 0
         }
         response = app.test_client().post('/api/v1/auth/sign_in', json=user)
         token = json.loads(response.data)["data"][0]['token']
-        print(token)
         return token
 
     @staticmethod
@@ -36,5 +35,4 @@ class GetToken:
         }
         response = app.test_client().post('/api/v1/auth/sign_in', json=user)
         token = json.loads(response.data)["data"][0]['token']
-        print(token)
         return token

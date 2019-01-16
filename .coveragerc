@@ -1,5 +1,5 @@
 [report]
-omit = app\__init__.py
-    tests\*
+omit = 
+    *\__init__.py
     *.pyc
     */site-packages/*

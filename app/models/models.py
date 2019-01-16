@@ -1,3 +1,6 @@
+from werkzeug.security import generate_password_hash, check_password_hash
+from app.helpers.helpers import get_current_role, get_current_identity
+
 class Incident:
 
     incident_id = 1
@@ -15,6 +18,37 @@ class Incident:
         self.videos = videos
         self.comment = comment
         Incident.incident_id += 1
+
+    @staticmethod
+    def get_red_flag_of_id(red_flag_id, red_flags):
+        red_flag_of_id = [
+            red_flag for red_flag in red_flags 
+            if red_flag["_id"] == red_flag_id]
+
+        if not get_current_role():
+                red_flag_of_id = [
+                    red_flag for red_flag in red_flags 
+                    if red_flag["createdBy"] == get_current_identity()
+                    and red_flag["_id"] == red_flag_id]
+        return red_flag_of_id
+
+
+    @staticmethod
+    def get_red_flags(red_flags_list):
+        red_flags = red_flags_list
+        
+        if not get_current_role():
+            red_flags = [
+                red_flag for red_flag in red_flags 
+                if red_flag["createdBy"] == get_current_identity()]
+        return red_flags
+
+    @staticmethod
+    def is_red_flag_editable(red_flag_id, red_flags):
+        red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
+        if red_flag_of_id[0]["status"] == "draft":
+            return red_flag_of_id
+
 
     def convert_to_dict(self):
         return dict(_id=self._id, createdBy=self.createdBy,
@@ -41,6 +75,29 @@ class User:
         self.registered = registered
         self.isAdmin = isAdmin
         User.user_id += 1
+
+
+    @staticmethod
+    def username_exists(name, users):
+        username = [username for username in users if username["username"] == name]
+        return username
+
+
+    @staticmethod
+    def verify_user(data_input, users_list, username, password, isAdmin):
+        user = [data_input for data_input in users_list 
+        if data_input["username"] == username and 
+        check_password_hash(data_input["password"], password) and 
+        data_input["isAdmin"] == isAdmin]
+        return user
+
+
+    @staticmethod
+    def user_exits(user_list, username, email):
+        user = [user for user in user_list if user["username"] == username
+            or user["email"] == email]
+        return user
+    
 
     def convert_to_dict(self):
         return dict(_id=self._id, firstname=self.firstname,

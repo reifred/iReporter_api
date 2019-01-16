@@ -13,7 +13,7 @@ class TestApp(unittest.TestCase):
             "email": "rei33@gmail.com",
             "phoneNumber": "0757605424",
             "username": "username",
-            "password": "password",
+            "password": "Password123",
             "isAdmin": 0
         }
 
@@ -36,7 +36,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(400, response.status_code)
         self.assertEqual(
             json_data["error"], 
-            "username shoud not be empty string"
+            "username should not be empty string"
         )
 
     def test_05_sign_up_with_short_password(self):
@@ -63,7 +63,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(400, response.status_code)
         self.assertEqual(
             json_data["error"],
-            "firstname shoud not be empty string")
+            "firstname should not be empty string")
 
     def test_07_sign_up_with_correct_data(self):
         response = self.client.post("/api/v1/auth/sign_up", json=self.user)
@@ -84,7 +84,7 @@ class TestApp(unittest.TestCase):
     def test_09_sign_in_after_registering(self):
         user = {
             "username": "username",
-            "password": "password",
+            "password": "Password123",
             "isAdmin": 0
         }
         response = self.client.post("/api/v1/auth/sign_in", json=user)
@@ -95,13 +95,13 @@ class TestApp(unittest.TestCase):
     def test_10_sign_in_with_wrong_username(self):
         user = {
             "username": "usern",
-            "password": "password",
+            "password": "Password12",
             "isAdmin": 0
         }
         response = self.client.post("/api/v1/auth/sign_in", json=user)
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
-        self.assertEqual(json_data["error"], "User doesnt exist")
+        self.assertEqual(json_data["error"], "Username doesnt exist")
 
     def test_11_sign_up_with_wrong_data_type(self):
         user = {
@@ -118,7 +118,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
-            json_data["error"], "lastname shoud not be empty string")
+            json_data["error"], "lastname should not be empty string")
 
     def test_12_sign_up_with_wrong_email(self):
         user = {
