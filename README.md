@@ -16,14 +16,21 @@ Install the following programs before using the API:
 2. Postman
 ```
 
-### Instructions for set up
-
+## Instructions for set up
 - Clone into this repo using:
 ```
 git clone https://github.com/reifred/ireporter_api.git
 ```
-- Set up a virtual environment for python in the project directory
-- Install the required packages using:
+### Set up a virtual environment for python in the project directory
+Inorder to set up the virtual environment, you need to install the python package called virtualenv using pip.
+Run the command below to install it.
+- `pip install virtualenv` to install virtualenv
+- `virtualenv virtual`  to create a virtual environment named virtual
+- `virtual/Scripts/activate` to activate your virtual environment.
+- `virtual/Scripts/deactivate` to deactivate your virtual environment.
+
+### Install the required packages using:
+After setting up and activating your virtual environment, you need to install all the packages required by the project.
 ```
 pip install -r requirements.txt
 ```
