@@ -48,14 +48,14 @@ python run.py
  |GET|/api/v1/red_flags|Return all red-flags available|
  |GET|/api/v1/red_flags/int:red_flag_id|Get a specific red-flag record|
  |POST|/api/v1/red_flags|Create a red-flag record|
- |POST|/api/v1/auth/sign_up|Register new user|
+ |POST|/api/v1/auth/sign_up|Register a new user|
  |POST|/api/v1/auth/sign_in|Login a user or admin|
  |PATCH|/api/v1/red_flags/int:red_flag_id/location|Edit location of specific red-flag record| 
  |PATCH|/api/v1/red_flags/int:red_flag_id/comment|Edit comment of specific red-flag record|
  |PATCH|/api/v1/red_flags/int:red_flag_id/status|Edit status of specific red-flag record|
  |DELETE|/api/v1/red_flags/int:red_flag_id|Delete specific red-flag record|
  
- #### Sample Data to use in post man
+ #### Sample Data to use in postman
 ```
 Registering a user.
 {
@@ -65,13 +65,13 @@ Registering a user.
 	"email": "rei@gmail.com",
 	"phoneNumber": "0757605424",
 	"username": "username",
-	"password": "password"
+	"password": "Password123"
 }
 
 User Log In.
 {
 	"username": "username",
-	"password": "password",
+	"password": "Password123",
 	"isAdmin": 0
 }
 
@@ -85,6 +85,27 @@ Creating a red_flag
 }
 
 ``` 
+
+#### Sample output after user sign in
+```
+{
+    "data": [
+        {
+            "id": 1,
+            "message": "User login",
+            "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsImFkbSI6MCwiZXhwIjoxNTQ3Njg2NDQ3fQ.L1aiR6FHeG5vCvsuBFqpZlX4mYaXA845mEL_kvzQ7MY",
+            "username": "username"
+        }
+    ],
+    "status": 201
+}
+```
+#### Adding Token to headers using Postman
+- In Postman, select an API method.
+- Click the Authorization tab.
+- Choose OAuth 2.0 or Bearer Token.
+- Copy the token above and paste it in the edit text box provided on the right hand side.
+
  ### Built with
  - [Flask](http://flask.pocoo.org/) - Micro web framework for Python
  - [PIP](https://pip.pypa.io/en/stable/) - A python package installer
