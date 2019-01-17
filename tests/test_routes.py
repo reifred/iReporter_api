@@ -43,6 +43,17 @@ class TestApp(unittest.TestCase):
         self.assertEqual(
             json_data["data"][0]["message"], "Created red-flag record")
 
+    def test_03_user_recreate_red_flag(self):
+        response = self.client.post(
+            "/api/v1/red_flags",
+            headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
+            json=self.red_flag)
+        json_data = json.loads(response.data)
+        print(json_data)
+        self.assertEqual(400, response.status_code)
+        self.assertEqual(
+            json_data["error"], "Red_flag record already exists.")
+
     def test_04_user_create_red_flag_with_invalid_type(self):
         red_flag = {
             "comment": "We are facing this challenge",

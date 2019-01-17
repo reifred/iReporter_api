@@ -50,7 +50,7 @@ def create_red_flag_record_of_given_user():
             response = jsonify({
                 "status": 400,
                 "error": "Red_flag record already exists."
-                })
+                }), 400
         else:
             incident = Incident(createdBy, createdOn, _type, location,
                                 status, images, videos, comment)
