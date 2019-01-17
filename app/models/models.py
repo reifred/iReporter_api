@@ -21,6 +21,15 @@ class Incident:
         Incident.incident_id += 1
 
     @staticmethod
+    def red_flag_exists(createdBy, comment, location, redflag_list):
+        red_flag = [
+            red_flag for red_flag in redflag_list 
+            if red_flag["createdBy"] == createdBy and 
+            red_flag["comment"] == comment and 
+            red_flag["location"] == location ]
+        return red_flag
+
+    @staticmethod
     def get_red_flag_of_id(red_flag_id, red_flags):
         red_flag_of_id = [
             red_flag for red_flag in red_flags
