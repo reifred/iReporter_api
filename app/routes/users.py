@@ -136,7 +136,8 @@ def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
         }), 404
     elif not red_flag_of_id:
         response = jsonify({
-            "status": 400, "error": "ID Not found. Enter a valid ID"
+            "status": 400, 
+            "error": f"Redflag record of id {red_flag_id} doesn't exist"
         }), 400
     else:
         red_flag_editable = Incident.is_red_flag_editable(

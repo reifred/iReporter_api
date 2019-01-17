@@ -183,7 +183,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         json_data = json.loads(response.data)
         self.assertEqual(
-            json_data["error"], "ID Not found. Enter a valid ID")
+            json_data["error"], "Redflag record of id 11 doesn't exist")
 
     def test_18_edit_user_red_flag_comment_with_short_comment(self):
         comment = {"comment": "Today"}
