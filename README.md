@@ -79,7 +79,7 @@ User Log In.
 {
 	"username": "username",
 	"password": "Password123",
-	"isAdmin": 0
+	"isAdmin": false
 }
 
 Creating a red_flag
