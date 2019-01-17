@@ -26,7 +26,7 @@ def decoded_token(token):
     Function returns decoded token
     {uid: 1, "adm: 0, ext: 4757575"}
     """
-    decoded = jwt.decode(str(token), secret_key, algorithms="HS256")
+    decoded = jwt.decode(token, secret_key, algorithms="HS256")
     return decoded
 
 
@@ -37,7 +37,7 @@ def extract_token_from_header():
             "error": "Bad authorization header",
             "status": 400
         })
-    token = str(authorization_header).split(" ")[1]
+    token = authorization_header.split(" ")[1]
     return token
 
 
@@ -46,8 +46,7 @@ def token_required(func):
     def wrapper(*args, **kwargs):
         response = None
         try:
-            token = extract_token_from_header()
-            decoded_token(token)
+            extract_token_from_header()
             response = func(*args, **kwargs)
         except jwt.ExpiredSignatureError:
             response = jsonify({
