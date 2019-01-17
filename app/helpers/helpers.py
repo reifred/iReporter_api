@@ -7,7 +7,7 @@ import datetime
 secret_key = environ.get("SECRET_KEY", "my_secret_key")
 
 
-def encode_token(user_id, isAdmin=0):
+def encode_token(user_id, isAdmin=False):
     """
     Function that returns encoded token
     that contains uid,admin,iat,exp
@@ -24,7 +24,7 @@ def encode_token(user_id, isAdmin=0):
 def decoded_token(token):
     """
     Function returns decoded token
-    {uid: 1, "adm: 0, ext: 4757575"}
+    {uid: 1, "adm: False, ext: 4757575"}
     """
     decoded = jwt.decode(token, secret_key, algorithms="HS256")
     return decoded

@@ -34,7 +34,7 @@ def sign_up():
     username = data.get("username")
     password = data.get("password")
     registered = datetime.now().strftime("%Y-%m-%d")
-    isAdmin = 0
+    isAdmin = False
 
     user = User.user_exits(users, username, email)
 
@@ -86,7 +86,7 @@ def sign_in():
 
     errors = validate_sign_in(username, password)
 
-    if username == "admin" and password == "admin@33" and isAdmin == 1:
+    if username == "admin" and password == "admin@33" and isAdmin == True:
         token = encode_token(id(1), isAdmin)
         response = jsonify({
             "status": 201,

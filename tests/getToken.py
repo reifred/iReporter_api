@@ -14,13 +14,13 @@ class GetToken:
             "phoneNumber": "0757605424",
             "username": "username33",
             "password": "Password33",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = app.test_client().post('/api/v1/auth/sign_up', json=user)
         user = {
             "username": "username33",
             "password": "Password33",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = app.test_client().post('/api/v1/auth/sign_in', json=user)
         token = json.loads(response.data)["data"][0]['token']
@@ -31,7 +31,7 @@ class GetToken:
         user = {
             "username": "admin",
             "password": "admin@33",
-            "isAdmin": 1
+            "isAdmin": True
         }
         response = app.test_client().post('/api/v1/auth/sign_in', json=user)
         token = json.loads(response.data)["data"][0]['token']
