@@ -16,8 +16,11 @@ class TestApp(unittest.TestCase):
         }
 
     def test_01_create_red_flag_without_JSON_data(self):
-        response = self.client.post("/api/v1/red_flags",
-            headers=dict(Authorization='Bearer ' + GetToken.get_user_token()))
+        response = self.client.post(
+            "/api/v1/red_flags",
+            headers=dict(
+                Authorization='Bearer ' +
+                GetToken.get_user_token()))
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
@@ -38,7 +41,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(201, response.status_code)
         self.assertEqual(
-            json_data["data"][0]["message"],"Created red-flag record")
+            json_data["data"][0]["message"], "Created red-flag record")
 
     def test_04_user_create_red_flag_with_invalid_type(self):
         red_flag = {
@@ -128,13 +131,13 @@ class TestApp(unittest.TestCase):
     def test_13_edit_user_red_flag_location_with_wrong_URL(self):
         location = {"location": "Kampala"}
         response = self.client.patch(
-            "/api/v1/red_flags/1/locat", 
+            "/api/v1/red_flags/1/locat",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
             json=location)
         json_data = json.loads(response.data)
         self.assertEqual(404, response.status_code)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "Page Not found. Enter a valid URL"
         )
 
@@ -259,7 +262,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "ID Not found. Enter a valid ID"
         )
 
@@ -268,7 +271,7 @@ class TestApp(unittest.TestCase):
             "/api/v1/red_flags",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
             json=self.red_flag)
-        
+
         response = self.client.delete(
             "/api/v1/red_flags/2",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()))

@@ -27,3 +27,4 @@ def errors(error):
             "error": "Method not allowed."
         }), 405
     return response
+    

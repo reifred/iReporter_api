@@ -35,7 +35,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "username should not be empty string"
         )
 
@@ -102,6 +102,17 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(json_data["error"], "Username doesnt exist")
+
+    def test_10_sign_in_with_wrong_password(self):
+        user = {
+            "username": "username",
+            "password": "Passwor12d",
+            "isAdmin": 0
+        }
+        response = self.client.post("/api/v1/auth/sign_in", json=user)
+        json_data = json.loads(response.data)
+        self.assertEqual(400, response.status_code)
+        self.assertEqual(json_data["error"], "Enter correct password")
 
     def test_11_sign_up_with_wrong_data_type(self):
         user = {

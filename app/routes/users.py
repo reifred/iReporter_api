@@ -76,7 +76,7 @@ def get_all_red_flag_records():
 @admin_required
 def edit_status_of_user_red_flag(red_flag_id):
     """Edit the status of a user red flag"""
-    red_flag = Incident.get_red_flag_of_id(red_flag_id,red_flags)
+    red_flag = Incident.get_red_flag_of_id(red_flag_id, red_flags)
 
     if not red_flag:
         response = jsonify({
@@ -139,7 +139,8 @@ def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
             "status": 400, "error": "ID Not found. Enter a valid ID"
         }), 400
     else:
-        red_flag_editable = Incident.is_red_flag_editable(red_flag_id, red_flags)
+        red_flag_editable = Incident.is_red_flag_editable(
+            red_flag_id, red_flags)
         if not red_flag_editable:
             response = jsonify({
                 "status": 400,
@@ -149,7 +150,8 @@ def patch_red_flag_of_given_user(red_flag_id, what_to_edit):
             comment = request.get_json().get("comment")
             location = request.get_json().get("location")
             data = location if what_to_edit == "location" else comment
-            error = validate_string("location",data) if what_to_edit == "location" else validate_comment(comment)
+            error = validate_string(
+                "location", data) if what_to_edit == "location" else validate_comment(comment)
 
             if error:
                 response = jsonify({"status": 400, "error": error}), 400
@@ -175,7 +177,8 @@ def delete_red_flag_of_given_user(red_flag_id):
             "status": 400, "error": "ID Not found. Enter a valid ID"
         }), 400
     else:
-        red_flag_editable = Incident.is_red_flag_editable(red_flag_id, red_flags)
+        red_flag_editable = Incident.is_red_flag_editable(
+            red_flag_id, red_flags)
         if not red_flag_editable:
             response = jsonify({
                 "status": 400,
