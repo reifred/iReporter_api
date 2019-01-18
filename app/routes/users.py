@@ -81,12 +81,12 @@ def get_all_red_flag_records():
 @admin_required
 def edit_status_of_user_red_flag(red_flag_id):
     """Edit the status of a user red flag"""
-    red_flag = Incident.get_red_flag_of_id(red_flag_id, red_flags)
+    red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
 
-    if not red_flag:
+    if not red_flag_of_id:
         response = jsonify({
-            "status": 400,
-            "error": "ID Not found. Enter a valid ID"
+            "status": 400, 
+            "error": f"Redflag record of id {red_flag_id} doesn't exist"
         }), 400
     else:
         status = request.get_json().get("status")
@@ -94,11 +94,11 @@ def edit_status_of_user_red_flag(red_flag_id):
         if error:
             response = jsonify({"status": 400, "error": error}), 400
         else:
-            red_flag[0]["status"] = status
+            red_flag_of_id[0]["status"] = status
             response = jsonify({
                 "status": 200,
                 "data": [{
-                    "id": red_flag[0]["_id"],
+                    "id": red_flag_of_id[0]["_id"],
                     "message":"Updated red-flag status"
                 }]}), 200
     return response
@@ -111,8 +111,8 @@ def get_single_red_flag_of_id(red_flag_id):
     red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
     if not red_flag_of_id:
         response = jsonify({
-            "status": 400,
-            "error": "ID Not found. Enter a valid ID"
+            "status": 400, 
+            "error": f"Redflag record of id {red_flag_id} doesn't exist"
         }), 400
     else:
         response = jsonify({
@@ -180,7 +180,8 @@ def delete_red_flag_of_given_user(red_flag_id):
     red_flag_of_id = Incident.get_red_flag_of_id(red_flag_id, red_flags)
     if not red_flag_of_id:
         response = jsonify({
-            "status": 400, "error": "ID Not found. Enter a valid ID"
+            "status": 400, 
+            "error": f"Redflag record of id {red_flag_id} doesn't exist"
         }), 400
     else:
         red_flag_editable = Incident.is_red_flag_editable(

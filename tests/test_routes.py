@@ -274,7 +274,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             json_data["error"],
-            "ID Not found. Enter a valid ID"
+            "Redflag record of id 10 doesn't exist"
         )
 
     def test_25_remove_user_red_flag(self):
