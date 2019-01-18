@@ -14,7 +14,7 @@ class TestApp(unittest.TestCase):
             "phoneNumber": "0757605424",
             "username": "username",
             "password": "Password123",
-            "isAdmin": 0
+            "isAdmin": False
         }
 
     def test_01_home(self):
@@ -35,7 +35,7 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "username should not be empty string"
         )
 
@@ -48,7 +48,7 @@ class TestApp(unittest.TestCase):
             "phoneNumber": "0757605424",
             "username": "username",
             "password": "pass",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = self.client.post("/api/v1/auth/sign_up", json=user)
         json_data = json.loads(response.data)
@@ -85,7 +85,7 @@ class TestApp(unittest.TestCase):
         user = {
             "username": "username",
             "password": "Password123",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = self.client.post("/api/v1/auth/sign_in", json=user)
         json_data = json.loads(response.data)
@@ -96,12 +96,23 @@ class TestApp(unittest.TestCase):
         user = {
             "username": "usern",
             "password": "Password12",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = self.client.post("/api/v1/auth/sign_in", json=user)
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(json_data["error"], "Username doesnt exist")
+
+    def test_10_sign_in_with_wrong_password(self):
+        user = {
+            "username": "username",
+            "password": "Passwor12d",
+            "isAdmin": False
+        }
+        response = self.client.post("/api/v1/auth/sign_in", json=user)
+        json_data = json.loads(response.data)
+        self.assertEqual(400, response.status_code)
+        self.assertEqual(json_data["error"], "Enter correct password")
 
     def test_11_sign_up_with_wrong_data_type(self):
         user = {
@@ -112,7 +123,7 @@ class TestApp(unittest.TestCase):
             "phoneNumber": "0757605424",
             "username": "username2",
             "password": "password",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = self.client.post("/api/v1/auth/sign_up", json=user)
         json_data = json.loads(response.data)
@@ -129,7 +140,7 @@ class TestApp(unittest.TestCase):
             "phoneNumber": "0757605424",
             "username": "username2",
             "password": "password",
-            "isAdmin": 0
+            "isAdmin": False
         }
         response = self.client.post("/api/v1/auth/sign_up", json=user)
         json_data = json.loads(response.data)

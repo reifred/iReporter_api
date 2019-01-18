@@ -16,8 +16,11 @@ class TestApp(unittest.TestCase):
         }
 
     def test_01_create_red_flag_without_JSON_data(self):
-        response = self.client.post("/api/v1/red_flags",
-            headers=dict(Authorization='Bearer ' + GetToken.get_user_token()))
+        response = self.client.post(
+            "/api/v1/red_flags",
+            headers=dict(
+                Authorization='Bearer ' +
+                GetToken.get_user_token()))
         json_data = json.loads(response.data)
         self.assertEqual(400, response.status_code)
         self.assertEqual(
@@ -38,7 +41,18 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(201, response.status_code)
         self.assertEqual(
-            json_data["data"][0]["message"],"Created red-flag record")
+            json_data["data"][0]["message"], "Created red-flag record")
+
+    def test_03_user_recreate_red_flag(self):
+        response = self.client.post(
+            "/api/v1/red_flags",
+            headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
+            json=self.red_flag)
+        json_data = json.loads(response.data)
+        print(json_data)
+        self.assertEqual(400, response.status_code)
+        self.assertEqual(
+            json_data["error"], "Red_flag record already exists.")
 
     def test_04_user_create_red_flag_with_invalid_type(self):
         red_flag = {
@@ -128,13 +142,13 @@ class TestApp(unittest.TestCase):
     def test_13_edit_user_red_flag_location_with_wrong_URL(self):
         location = {"location": "Kampala"}
         response = self.client.patch(
-            "/api/v1/red_flags/1/locat", 
+            "/api/v1/red_flags/1/locat",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
             json=location)
         json_data = json.loads(response.data)
         self.assertEqual(404, response.status_code)
         self.assertEqual(
-            json_data["error"], 
+            json_data["error"],
             "Page Not found. Enter a valid URL"
         )
 
@@ -180,7 +194,7 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         json_data = json.loads(response.data)
         self.assertEqual(
-            json_data["error"], "ID Not found. Enter a valid ID")
+            json_data["error"], "Redflag record of id 11 doesn't exist")
 
     def test_18_edit_user_red_flag_comment_with_short_comment(self):
         comment = {"comment": "Today"}
@@ -259,8 +273,8 @@ class TestApp(unittest.TestCase):
         json_data = json.loads(response.data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            json_data["error"], 
-            "ID Not found. Enter a valid ID"
+            json_data["error"],
+            "Redflag record of id 10 doesn't exist"
         )
 
     def test_25_remove_user_red_flag(self):
@@ -268,7 +282,7 @@ class TestApp(unittest.TestCase):
             "/api/v1/red_flags",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()),
             json=self.red_flag)
-        
+
         response = self.client.delete(
             "/api/v1/red_flags/2",
             headers=dict(Authorization='Bearer ' + GetToken.get_user_token()))
