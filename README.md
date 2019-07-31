@@ -71,7 +71,7 @@ Registering a user.
 	"lastname": "Fred",
 	"othernames": "",
 	"email": "rei@gmail.com",
-	"phoneNumber": "0757605424",
+	"phoneNumber": "0000000000",
 	"username": "username",
 	"password": "Password123"
 }
